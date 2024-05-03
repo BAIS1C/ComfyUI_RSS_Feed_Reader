@@ -34,18 +34,17 @@ class RSSFeedNode:
         # Implementation of the RSS feed fetching and parsing
         return (self.fetch_and_parse_rss(feed_url),)
     
-    def fetch_and_parse_rss(self, feed_url):
-        # Parsing the RSS feed using feedparser
-        feed = feedparser.parse(feed_url)
-        
-        # Formatting the output as a script
-        script_output = "News Update:\n"
-        for entry in feed.entries:
-            title = entry.title
-            description = entry.description
-            script_output += f"Title: {title}\nDescription: {description}\n\n"
-        
-        return script_output
+ def fetch_and_parse_rss(feed_url):
+    feed = feedparser.parse(feed_url)
+    prompts = []
+
+    for entry in feed.entries:
+        # Creating a prompt that combines the title and a brief summary
+        prompt = f"Imagine a scene where {entry.title} happens. {entry.summary}"
+        prompts.append(prompt)
+
+    return prompts
+
 
 # Registration for the node, make sure this matches how other nodes are registered
 NODE_CLASS_MAPPINGS = {
@@ -53,5 +52,5 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RSSFeedNode": "RSS Feed Reader"
+    "RSSFeedNode": "RSS Feed to Prompt"
 }
