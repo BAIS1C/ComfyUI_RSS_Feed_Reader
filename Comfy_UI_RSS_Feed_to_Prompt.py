@@ -47,6 +47,10 @@ class RSSFeedNode:
 
 
 # Registration for the node, make sure this matches how other nodes are registered
+def register():
+    node = RSSFeedNode()
+    ComfyUI.register_node(node)
+
 NODE_CLASS_MAPPINGS = {
     "RSSFeedNode": RSSFeedNode
 }
