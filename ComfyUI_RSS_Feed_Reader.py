@@ -2,7 +2,7 @@ import feedparser
 
 class RSSFeedNode:
     """
-    ComfyUI_RSS_Feed_Reader
+    RSS Feed Node
 
     Fetches and parses RSS feeds, producing a script output containing news titles and descriptions.
     """
@@ -11,6 +11,9 @@ class RSSFeedNode:
     FUNCTION = "execute"
     CATEGORY = "Data Fetching"
 
+    def __init__(self):
+        pass
+    
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -24,37 +27,33 @@ class RSSFeedNode:
         }
 
     def execute(self, feed_url):
-        try:
-            return (self.fetch_and_parse_rss(feed_url),)
-        except Exception as e:
-            print(f"Error executing ComfyUI_RSS_Feed_Reader: {e}")
-            return ("",)
-
+        # Fetch and parse the RSS feed
+        return (self.fetch_and_parse_rss(feed_url),)
+    
     def fetch_and_parse_rss(self, feed_url):
+        # Parse the RSS feed
         feed = feedparser.parse(feed_url)
-        if feed.bozo:
-            raise ValueError(f"Error parsing feed: {feed.bozo_exception}")
-
+        
+        # Initialize a script output
         script_output = "News Update:\n"
+        
+        # Loop through the entries in the feed
         for entry in feed.entries:
             title = entry.title
             description = entry.description
+            
+            # Append each news item to the script
             script_output += f"Title: {title}\nDescription: {description}\n\n"
-
+        
         return script_output
 
-# Register the node
-def register():
-    from ComfyUI import node_manager
-    node_manager.register_node(ComfyUI_RSS_Feed_Reader)
-
-register()
-
-# Node class mappings and display name mappings
+# A dictionary that contains all nodes you want to export with their names
+# NOTE: names should be globally unique
 NODE_CLASS_MAPPINGS = {
-    "ComfyUI_RSS_Feed_Reader": ComfyUI_RSS_Feed_Reader
+    "RSSFeedNode": RSSFeedNode
 }
 
+# A dictionary that contains the friendly/humanly readable titles for the nodes
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "ComfyUI_RSS_Feed_Reader": "ComfyUI_RSS_Feed_Reader"
+    "RSSFeedNode": "RSS Feed Reader"
 }
