@@ -1,12 +1,16 @@
 import feedparser
-from comfyui.core.node import Node, Input, Output
 
-class RSSFeedNode(Node):
+class RSSFeedNode:
     """
-    RSS Feed Node for Comfy UI
+    RSS Feed Node
 
     Fetches and parses RSS feeds, producing a script output containing news titles and descriptions.
     """
+    RETURN_TYPES = ("STRING",)
+    RETURN_NAMES = ("script_output",)
+    FUNCTION = "execute"
+    CATEGORY = "Data Fetching"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -19,46 +23,38 @@ class RSSFeedNode(Node):
             },
         }
 
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("script_output",)
-    FUNCTION = "execute"
-    CATEGORY = "Data Fetching"
-
-    def __init__(self):
-        super().__init__()
-        print("RSSFeedNode initialized")
-
     def execute(self, feed_url):
         try:
-            print(f"Executing with feed_url: {feed_url}")
-            result = self.fetch_and_parse_rss(feed_url)
-            return (result,)
+            return (self.fetch_and_parse_rss(feed_url),)
         except Exception as e:
             print(f"Error executing RSSFeedNode: {e}")
             return ("",)
 
     def fetch_and_parse_rss(self, feed_url):
-        print(f"Fetching and parsing RSS feed from: {feed_url}")
         feed = feedparser.parse(feed_url)
         if feed.bozo:
             raise ValueError(f"Error parsing feed: {feed.bozo_exception}")
 
-        prompts = []
+        script_output = "News Update:\n"
         for entry in feed.entries:
-            prompt = f"Imagine a scene where {entry.title} happens. {entry.summary}"
-            prompts.append(prompt)
+            title = entry.title
+            description = entry.description
+            script_output += f"Title: {title}\nDescription: {description}\n\n"
 
-        return "\n".join(prompts)
+        return script_output
 
+# Register the node
 def register():
-    print("Registering RSSFeedNode")
-    node = RSSFeedNode()
-    ComfyUI.register_node(node)
+    from ComfyUI import node_manager
+    node_manager.register_node(RSSFeedNode)
 
+register()
+
+# Node class mappings and display name mappings
 NODE_CLASS_MAPPINGS = {
     "RSSFeedNode": RSSFeedNode
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RSSFeedNode": "RSS Feed to Prompt"
+    "RSSFeedNode": "RSS Feed Reader"
 }
