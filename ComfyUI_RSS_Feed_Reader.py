@@ -2,7 +2,7 @@ import feedparser
 
 class RSSFeedNode:
     """
-    RSS Feed Node
+    ComfyUI_RSS_Feed_Reader
 
     Fetches and parses RSS feeds, producing a script output containing news titles and descriptions.
     """
