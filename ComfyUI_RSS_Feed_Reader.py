@@ -27,7 +27,7 @@ class RSSFeedNode:
         try:
             return (self.fetch_and_parse_rss(feed_url),)
         except Exception as e:
-            print(f"Error executing RSSFeedNode: {e}")
+            print(f"Error executing ComfyUI_RSS_Feed_Reader: {e}")
             return ("",)
 
     def fetch_and_parse_rss(self, feed_url):
@@ -46,15 +46,15 @@ class RSSFeedNode:
 # Register the node
 def register():
     from ComfyUI import node_manager
-    node_manager.register_node(RSSFeedNode)
+    node_manager.register_node(ComfyUI_RSS_Feed_Reader)
 
 register()
 
 # Node class mappings and display name mappings
 NODE_CLASS_MAPPINGS = {
-    "RSSFeedNode": RSSFeedNode
+    "ComfyUI_RSS_Feed_Reader": ComfyUI_RSS_Feed_Reader
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RSSFeedNode": "RSS Feed Reader"
+    "ComfyUI_RSS_Feed_Reader": "ComfyUI_RSS_Feed_Reader"
 }
