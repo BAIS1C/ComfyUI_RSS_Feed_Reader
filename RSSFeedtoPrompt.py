@@ -29,14 +29,21 @@ class RSSFeedNode(Node):
         print("RSSFeedNode initialized")
 
     def execute(self, feed_url):
-        print(f"Executing with feed_url: {feed_url}")
-        return (self.fetch_and_parse_rss(feed_url),)
+        try:
+            print(f"Executing with feed_url: {feed_url}")
+            result = self.fetch_and_parse_rss(feed_url)
+            return (result,)
+        except Exception as e:
+            print(f"Error executing RSSFeedNode: {e}")
+            return ("",)
 
     def fetch_and_parse_rss(self, feed_url):
         print(f"Fetching and parsing RSS feed from: {feed_url}")
         feed = feedparser.parse(feed_url)
-        prompts = []
+        if feed.bozo:
+            raise ValueError(f"Error parsing feed: {feed.bozo_exception}")
 
+        prompts = []
         for entry in feed.entries:
             prompt = f"Imagine a scene where {entry.title} happens. {entry.summary}"
             prompts.append(prompt)

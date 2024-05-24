@@ -1,9 +1,8 @@
-from .RSSFeedtoPrompt import register
+from .RSSFeedtoPrompt import RSSFeedNode
 
-def initialize():
-    node_classes = register()
-    for node_name, node_class in node_classes.items():
-        globals()[node_name] = node_class
+def register():
+    from ComfyUI import node_manager
+    node_manager.register_node(RSSFeedNode)
 
-initialize()
-
+# Ensure the module is registered when the package is imported
+register()
