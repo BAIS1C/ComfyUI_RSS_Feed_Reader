@@ -1,2 +1,9 @@
-# __init__.py
-# This file can be empty, it just needs to exist to mark the directory as a package.
+from .RSSFeedtoPrompt import register
+
+def initialize():
+    node_classes = register()
+    for node_name, node_class in node_classes.items():
+        globals()[node_name] = node_class
+
+initialize()
+
