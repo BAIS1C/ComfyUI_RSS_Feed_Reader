@@ -1,0 +1,15 @@
+[project]
+name = "comfyui_rss_feed_reader"
+description = "A Simple Python RSS Feed Reader to create Prompts in Comfy UI"
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["feedparser"]
+
+[project.urls]
+Repository = "https://github.com/BAIS1C/ComfyUI_RSS_Feed_Reader"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI_RSS_Feed_Reader"
+Icon = ""
